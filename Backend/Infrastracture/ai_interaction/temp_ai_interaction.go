@@ -21,6 +21,7 @@ import (
 const (
 	_GEMINI_FLASH_2_5 = "gemini-2.5-flash"
 	_GEMINI_FLASH_1_5 = "gemini-1.5-flash"
+	TIME_OUT          = 15 * time.Second
 )
 
 var _CURR_GEMINI_MODEL_USING = _GEMINI_FLASH_2_5
@@ -278,7 +279,7 @@ func (ai *AIInteraction) GenerateIntake(ctx context.Context, prompt string, lang
 
 	for i := 0; i < len(ai.clientPool.clients); i++ {
 		// Create a new context with a 15-second timeout for this attempt
-		timeoutCtx, cancel := context.WithTimeout(ctx, 15*time.Second)
+		timeoutCtx, cancel := context.WithTimeout(ctx, TIME_OUT)
 		defer cancel() // Ensure context is cancelled
 
 		client := ai.clientPool.getClient()
@@ -331,7 +332,7 @@ func (ai *AIInteraction) ClassifyDeal(ctx context.Context, text string) (*domain
 	var err error
 
 	for i := 0; i < len(ai.clientPool.clients); i++ {
-		timeoutCtx, cancel := context.WithTimeout(ctx, 15*time.Second)
+		timeoutCtx, cancel := context.WithTimeout(ctx, TIME_OUT)
 		defer cancel()
 
 		client := ai.clientPool.getClient()
@@ -421,7 +422,7 @@ Today is: %s
 	var resp *genai.GenerateContentResponse
 
 	for i := 0; i < len(ai.clientPool.clients); i++ {
-		timeoutCtx, cancel := context.WithTimeout(ctx, 15*time.Second)
+		timeoutCtx, cancel := context.WithTimeout(ctx, TIME_OUT)
 		defer cancel()
 
 		client := ai.clientPool.getClient()
@@ -491,7 +492,7 @@ Today's date: %s
 	var genErr error
 
 	for i := 0; i < len(ai.clientPool.clients); i++ {
-		timeoutCtx, cancel := context.WithTimeout(ctx, 15*time.Second)
+		timeoutCtx, cancel := context.WithTimeout(ctx, TIME_OUT)
 		defer cancel()
 
 		client := ai.clientPool.getClient()
@@ -587,7 +588,7 @@ Today is: %s
 	// var err error // This line is commented out as `err` is declared in the outer scope.
 
 	for i := 0; i < len(ai.clientPool.clients); i++ {
-		timeoutCtx, cancel := context.WithTimeout(ctx, 15*time.Second)
+		timeoutCtx, cancel := context.WithTimeout(ctx, TIME_OUT)
 		defer cancel()
 
 		client := ai.clientPool.getClient()
@@ -638,7 +639,7 @@ func (ai *AIInteraction) TitleGenerateHelper(ctx context.Context, draftStringPro
 	var err error
 
 	for i := 0; i < len(ai.clientPool.clients); i++ {
-		timeoutCtx, cancel := context.WithTimeout(ctx, 15*time.Second)
+		timeoutCtx, cancel := context.WithTimeout(ctx, TIME_OUT)
 		defer cancel()
 
 		client := ai.clientPool.getClient()

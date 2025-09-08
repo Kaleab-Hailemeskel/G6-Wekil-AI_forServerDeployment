@@ -8,13 +8,14 @@ import (
 	domain "wekil_ai/Domain"
 	domainInter "wekil_ai/Domain/Interfaces"
 	infrastracture "wekil_ai/Infrastracture"
-	"wekil_ai/config"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
+
 var (
-	BASE_URL = config.BASE_URL
+	BASE_URL = "https://g6-wekil-ai-forserverdeployment.onrender.com"
 )
+
 type AgreementUseCase struct {
 	IntakeRepo        domainInter.IIntakeRepo
 	AgreementRepo     domainInter.IAgreementRepo
@@ -65,7 +66,8 @@ func (a *AgreementUseCase) SendAgreement(receiverEmail string, agreement *domain
 	}
 	// send email
 	log.Println("toEmail: ", receiverEmail, "  agreementID: ", agreement.ID.Hex())
-	a.EmailService.SendAgreementLink(acceptor.Email, BASE_URL + "/agreement/" + agreement.ID.Hex())
+	log.Println("sending the URL: ", BASE_URL+"/agreement/"+agreement.ID.Hex())
+	a.EmailService.SendAgreementLink(acceptor.Email, BASE_URL+"/agreement/"+agreement.ID.Hex())
 
 	// send notification
 	_, err = a.NotificatoinRepo_.CreateNotification_(context.Background(), &signRequestNotification)
@@ -206,7 +208,6 @@ func (a *AgreementUseCase) GetAgreementByID(agreementID primitive.ObjectID, user
 	}
 	return resAgree, nil
 }
-
 
 // GetAgreementByID implements domain.IAgreementUseCase.
 func (a *AgreementUseCase) GetAgreementByIDIntake(agreementID primitive.ObjectID, userID primitive.ObjectID) (*domain.AgreementIntake, error) {

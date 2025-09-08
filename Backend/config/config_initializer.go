@@ -53,5 +53,6 @@ func getEnv(key string) string {
 	if val == "" {
 		log.Fatalf("Environment variable %s is not set", key)
 	}
+	log.Println(key, ": ", val)
 	return val
 }
