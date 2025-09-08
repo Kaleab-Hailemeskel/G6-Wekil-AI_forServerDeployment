@@ -8,11 +8,12 @@ import (
 	domain "wekil_ai/Domain"
 	domainInter "wekil_ai/Domain/Interfaces"
 	infrastracture "wekil_ai/Infrastracture"
+	"wekil_ai/config"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
-const (
-	BASE_URL = "https://demo.wekilai.com"
+var (
+	BASE_URL = config.BASE_URL
 )
 type AgreementUseCase struct {
 	IntakeRepo        domainInter.IIntakeRepo
