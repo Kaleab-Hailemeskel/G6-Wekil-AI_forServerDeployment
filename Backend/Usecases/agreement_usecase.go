@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	BASE_URL = "https://g6-wekil-ai-forserverdeployment.onrender.com"
+	BASE_URL = "https://g6-wekil-ai-1.vercel.app/my-contract"
 )
 
 type AgreementUseCase struct {
@@ -215,10 +215,20 @@ func (a *AgreementUseCase) GetAgreementByIDIntake(agreementID primitive.ObjectID
 
 	if err != nil {
 		return nil, err
-	} else if resAgree.AcceptorID != userID && resAgree.CreatorID != userID {
+	} else if resAgree.AcceptorID != userID && resAgree.CreatorID != userID && resAgree.AcceptorID != primitive.NilObjectID {
 		return nil, fmt.Errorf("unauthorized access")
 	} else if resAgree.IsDeletedByAcceptor && resAgree.IsDeletedByCreator {
 		return nil, fmt.Errorf("trying to access deleted agreement")
+	}
+	if resAgree.AcceptorID == primitive.NilObjectID {
+		resAgree__, _ := a.AgreementRepo.GetAgreement(context.Background(), resAgree.ID)
+		resAgree__.AcceptorID = userID
+		resAgree.AcceptorID = userID
+
+		a.AgreementRepo.UpdateAgreement(context.Background(), resAgree.ID, resAgree__)
+		log.Println("✅ Acceptor Bind to the Agreement:")
+
+		return resAgree, nil
 	}
 	return resAgree, nil
 }
