@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	BASE_URL = "https://g6-wekil-ai-1.vercel.app/my-contract"
+	BASE_URL = "https://g6-wekil-ai-1.vercel.app/dashboard/my-contracts"
 )
 
 type AgreementUseCase struct {
@@ -67,7 +67,7 @@ func (a *AgreementUseCase) SendAgreement(receiverEmail string, agreement *domain
 	// send email
 	log.Println("toEmail: ", receiverEmail, "  agreementID: ", agreement.ID.Hex())
 	log.Println("sending the URL: ", BASE_URL+"/agreement/"+agreement.ID.Hex())
-	a.EmailService.SendAgreementLink(acceptor.Email, BASE_URL+"/agreement/"+agreement.ID.Hex())
+	a.EmailService.SendAgreementLink(acceptor.Email, BASE_URL+"/"+agreement.ID.Hex())
 
 	// send notification
 	_, err = a.NotificatoinRepo_.CreateNotification_(context.Background(), &signRequestNotification)
